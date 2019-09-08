@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--日志级别: OFF > FATAL > ERROR > WARN > INFO > DEBUG > TRACE > ALL -->
+<!--Configuration后面的status，这个用于设置log4j2自身内部的信息输出 -->
+<!--monitorInterval：Log4j能够自动检测修改配置 文件和重新配置本身，设置间隔秒数 -->
+<configuration status="error" monitorInterval="5">
+    <!-- %-5level：级别从左显示5个字符宽度 %msg：日志消息，%n是换行符 -->
+    <!-- %logger{36} 表示 Logger 名字最长36个字符 -->
+    <!-- 变量设置 -->
+    <Properties>
+        <property name="LOG_PATTERN" value="%date{HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n" />
+        <property name="FILE_PATH" value="/data/logs/standard" />
+        <property name="FILE_NAME" value="standard" />
+    </Properties>
+
+    <appenders>
+        <!-- 控制台只输出level及其以上级别的信息（onMatch），其他的直接拒绝（onMismatch）-->
+        <console name="Console" target="SYSTEM_OUT">
+            <PatternLayout pattern="${LOG_PATTERN}"/>
+            <ThresholdFilter level="debug" onMatch="ACCEPT" onMismatch="DENY"/>
+        </console>
+
+        <!-- 文件会打印出所有信息，这个log每次运行程序会自动清空，由append属性决定，适合临时测试用 -->
+        <File name="Filelog" fileName="${FILE_PATH}/root.log" append="false">
+            <PatternLayout pattern="${LOG_PATTERN}"/>
+            <ThresholdFilter level="debug" onMatch="ACCEPT" onMismatch="DENY"/>
+        </File>
+
+        <!-- 这个会打印出所有的info及以上级别的信息，每次大小超过size，则这size大小的日志会压缩作为存档 -->
+        <!-- DefaultRolloverStrategy属性如不设置，则默认为最多同一文件夹下7个文件开始覆盖 -->
+        <!-- interval属性用来指定多久滚动一次，默认是1 hour -->
+        <RollingFile name="RollingFileInfo" fileName="${FILE_PATH}/info.log" filePattern="${FILE_PATH}/$${date:yyyy-MM}/${FILE_NAME}-INFO-%d{yyyy-MM-dd}_%i.log.gz">
+            <ThresholdFilter level="info" onMatch="ACCEPT" onMismatch="DENY"/>
+            <PatternLayout pattern="${LOG_PATTERN}"/>
+            <Policies>
+                <TimeBasedTriggeringPolicy interval="1"/>
+                <SizeBasedTriggeringPolicy size="10MB"/>
+            </Policies>
+            <DefaultRolloverStrategy max="15"/>
+        </RollingFile>
+
+        <RollingFile name="RollingFileWarn" fileName="${FILE_PATH}/warn.log" filePattern="${FILE_PATH}/$${date:yyyy-MM}/${FILE_NAME}-WARN-%d{yyyy-MM-dd}_%i.log.gz">
+            <ThresholdFilter level="warn" onMatch="ACCEPT" onMismatch="DENY"/>
+            <PatternLayout pattern="${LOG_PATTERN}"/>
+            <Policies>
+                <TimeBasedTriggeringPolicy interval="1"/>
+                <SizeBasedTriggeringPolicy size="10MB"/>
+            </Policies>
+            <DefaultRolloverStrategy max="15"/>
+        </RollingFile>
+
+        <RollingFile name="RollingFileError" fileName="${FILE_PATH}/error.log" filePattern="${FILE_PATH}/$${date:yyyy-MM}/${FILE_NAME}-ERROR-%d{yyyy-MM-dd}_%i.log.gz">
+            <ThresholdFilter level="error" onMatch="ACCEPT" onMismatch="DENY"/>
+            <PatternLayout pattern="${LOG_PATTERN}"/>
+            <Policies>
+                <TimeBasedTriggeringPolicy interval="1"/>
+                <SizeBasedTriggeringPolicy size="10MB"/>
+            </Policies>
+            <DefaultRolloverStrategy max="15"/>
+        </RollingFile>
+
+    </appenders>
+
+    <!-- Root节点用来指定项目的根日志，如果没有单独指定Logger，那么就会默认使用该Root日志输出 -->
+    <loggers>
+        <!-- 定义的地方、appender-ref这两个日志级别，哪个级别高以哪个为准 -->
+        <!-- additivity=false则name下面日志只会在这里打印； -->
+        <!-- additivity=true则在root日志也会打印,打印级别以这里为准 -->
+        <Logger name="xy.standard" level="info" additivity="false">
+            <appender-ref ref="Console"/>
+        </Logger>-->
+
+        <!-- 定义的地方、root、appender-ref这三个日志级别，哪个级别高以哪个为准 -->
+        <root level="debug">
+            <appender-ref level="info" ref="Console"/>
+            <appender-ref level="info" ref="Filelog"/>
+            <appender-ref level="info" ref="RollingFileInfo"/>
+            <appender-ref level="warn" ref="RollingFileWarn"/>
+            <appender-ref level="error" ref="RollingFileError"/>
+        </root>
+    </loggers>
+
+</configuration>
