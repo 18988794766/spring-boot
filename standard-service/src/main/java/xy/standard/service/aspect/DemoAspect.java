@@ -22,7 +22,7 @@ public class DemoAspect {
      * 第三个*表示方法名（所有方法名）
      * 最后(..)表示方法的参数
      */
-    @Pointcut("execution(* xy.standard.service.service.*.*(..))")
+    @Pointcut("execution(* xy.standard.service.service1.*.*(..))")
     public void pointCut() {}
 
     /**

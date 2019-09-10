@@ -2,11 +2,13 @@ package xy.standard.service.service;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import xy.standard.service.annotation.AutoLog;
 
 @Slf4j
 @Service
 public class DemoService {
-    public String getData() {
+    @AutoLog(logType = 1, logContent = "自动日志打印")
+    public String getData(String str) {
         log.info("111111111111111111111");
         return "****************************";
     }
