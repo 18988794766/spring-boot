@@ -4,11 +4,16 @@ package xy.standard.api.controller;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import xy.standard.api.vo.QueryCardReqVo;
 import xy.standard.dao.dao.admin.AdminUserDao;
+import xy.standard.service.exception.BusinessException;
 import xy.standard.service.helper.RedisService;
 import xy.standard.service.service.DemoService;
+import xy.standard.service.vo.BaseRequestVo;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -52,6 +57,11 @@ public class MockController {
     @RequestMapping("/aspect2")
     public String aspect2() {
         demoService.printThrowException();
+        return "****************************";
+    }
+
+    @RequestMapping("/req")
+    public String request(@RequestBody @Validated BaseRequestVo<QueryCardReqVo> req) {
         return "****************************";
     }
 }
