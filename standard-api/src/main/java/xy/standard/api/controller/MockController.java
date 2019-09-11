@@ -44,7 +44,9 @@ public class MockController {
 
     @RequestMapping("/aspect1")
     public String aspect1() {
-        return demoService.getData("请求参数");
+        String data = demoService.getData("请求参数");
+        log.info("1111111");
+        return data;
     }
 
     @RequestMapping("/aspect2")
