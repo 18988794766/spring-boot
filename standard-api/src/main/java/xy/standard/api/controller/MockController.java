@@ -38,7 +38,7 @@ public class MockController {
         log.warn("这是warn打印");
         log.error("这是error打印");
 
-        //redisService.set("str1", "这是打印111");
+        redisService.set("huanglibin", "yes");
 
         ArrayList<String> data = new ArrayList<>();
         data.add((String) redisService.get("str1"));

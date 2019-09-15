@@ -38,11 +38,13 @@ public class UrlFilter implements Filter {
         log.info("doFilter执行前");
         HttpServletRequest request= (HttpServletRequest) servletRequest;
         HttpServletResponse response = (HttpServletResponse) servletResponse;
-        if (request.getRequestURL().toString().contains("log")) {
+        /*if (request.getRequestURL().toString().contains("log")) {
             request.getRequestDispatcher("/mock/aspect1").forward(request, response);
         } else {
             filterChain.doFilter(request, response);
-        }
+        }*/
+
+        filterChain.doFilter(request, response);
         log.info("doFilter执行后");
     }
 

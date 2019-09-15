@@ -18,6 +18,11 @@
             <artifactId>spring-boot-starter-data-redis</artifactId>
         </dependency>
         <dependency>
+            <groupId>redis.clients</groupId>
+            <artifactId>jedis</artifactId>
+            <version>2.8.2</version>
+        </dependency>
+        <dependency>
             <groupId>xy</groupId>
             <artifactId>standard-dao</artifactId>
             <version>1.0.0</version>
