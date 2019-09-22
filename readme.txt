@@ -1,1 +1,1 @@
-这是标准版demo
+spring boot使用模板
